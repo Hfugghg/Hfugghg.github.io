@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>个人博客</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -101,7 +102,7 @@
             })
             $("nav ul li a").eq(2).click(function () {
                 let resumeHTML = `
-                <div>
+                <div class="col-sm-12 col-md-3">
                     <center>
                         <form name="myForm">
                             <input id="mytext" type="text" value="0" class="inputTxt" />
