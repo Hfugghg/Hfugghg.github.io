@@ -112,7 +112,7 @@
                 clearInterval(xuan)
                 xuan = setInterval(function () {
                     // clearInterval(xuan)
-                    let num = Math.floor(Math.random() * 45)
+                    let num = Math.floor(Math.random() *  $(".in").val() + 1)
                     $("#mytext").val(num)
                 }, 200)
             })
