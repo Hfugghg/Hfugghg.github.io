@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人博客</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f7f7f7;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .header h1 {
+            margin-bottom: 0;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: #888;
+        }
+
+        .content {
+            margin: 0 20px 20px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #eee;
+        }
+
+        nav {
+            margin: 0 20px 20px;
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        nav li {
+            float: left;
+        }
+
+        nav li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        nav li a:hover {
+            background-color: #111;
+        }
+
+        .manba {
+            height: 100px;
+            width: 100px;
+        }
+
+        .inputTxt {
+            height: 500px;
+            width: 600px;
+            font-size: 300px;
+            text-align: center;
+            color: orangered;
+        }
+
+        .in {
+            width: 100px;
+        }
+    </style>
+    <script src="jquery.min.js"></script>
+    <script>
+        $(function () {
+            $("nav ul li a").eq(0).click(function () {
+                location.reload();
+            })
+            $("nav ul li a").eq(1).click(function () {
+                console.log("点击1")
+                let resumeHTML = '<h2>牢大</h2>' +
+                    '<div><img src="img/manba.jpg" alt="" class="manba"></div>' +
+                    '<p>姓名：牢大</p>';
+                $(".content").html(resumeHTML);
+            })
+            $("nav ul li a").eq(2).click(function () {
+                let resumeHTML = `
+                <div>
+                    <center>
+                        <form name="myForm">
+                            <input id="mytext" type="text" value="0" class="inputTxt" />
+                        </form>
+                        <input class="start" type="button" value="开始" />
+                        <input class="stop" type="button" value="停止" />
+                        <input type="text" class="in" value="请输入数字">
+                    </center>
+                </div>`
+                $(".content").html(resumeHTML);
+            })
+            let xuan
+            $(document).on("click", ".start", function () {
+                clearInterval(xuan)
+                xuan = setInterval(function () {
+                    // clearInterval(xuan)
+                    let num = Math.floor(Math.random() * 45)
+                    $("#mytext").val(num)
+                }, 200)
+            })
+            $(document).on("click", ".stop", function () {
+                clearInterval(xuan)
+            })
+            $(document).on("click", ".in", function () {
+                $(this).val("")
+            })
+        })
+    </script>
+</head>
+
+<body>
+    <div class="header">
+        <h1>个人博客</h1>
+        <p>一个简单的博客</p>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="javascript:;">首页</a></li>
+            <li><a href="javascript:;">关于我</a></li>
+            <li><a href="javascript:;">博客</a></li>
+            <li><a href="javascript:;">联系我</a></li>
+        </ul>
+    </nav>
+    <div class="content">
+        <h2>我的第一篇文章</h2>
+        <p class="one">这是我的第一篇博客文章，我将会在这里分享我的想法和经验。</p>
+        <!-- 文章内容 -->
+
+    </div>
+    <div class="footer">
+        <p>版权所有 &copy; 2024 我的个人博客</p>
+    </div>
+</body>
+
+</html>
