@@ -5,13 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>个人博客</title>
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
     <style>
-        body {
+        body,
+        html {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
             background-color: #f7f7f7;
+            height: 100%;
         }
 
         .header {
@@ -76,8 +77,16 @@
             width: 100px;
         }
 
+        /* .inputTxt {
+            height: 500px;
+            width: 600px;
+            font-size: 300px;
+            text-align: center;
+            color: orangered;
+        } */
+
         .in {
-            width: 100px;
+            width: auto;
         }
     </style>
     <script src="jquery.min.js"></script>
@@ -95,7 +104,7 @@
             })
             $("nav ul li a").eq(2).click(function () {
                 let resumeHTML = `
-                <div class="col-sm-12 col-md-12">
+                <div>
                     <center>
                         <form name="myForm">
                             <input id="mytext" type="text" value="0" class="inputTxt" />
@@ -112,7 +121,8 @@
                 clearInterval(xuan)
                 xuan = setInterval(function () {
                     // clearInterval(xuan)
-                    let num = Math.floor(Math.random() *  $(".in").val() + 1)
+
+                    let num = Math.floor(Math.random() * $(".in").val() + 1)
                     $("#mytext").val(num)
                 }, 200)
             })
@@ -123,10 +133,11 @@
                 $(this).val("")
             })
         })
+
     </script>
 </head>
 
-<body>
+<body class="snow-container">
     <div class="header">
         <h1>个人博客</h1>
         <p>一个简单的博客</p>
