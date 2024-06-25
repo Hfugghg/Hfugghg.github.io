@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>2306覃睿的项目</title>
+	<link rel="icon" type="image/png" sizes="192x192" href="img/logo.png">
+	<!-- 引入Bootstrap CSS -->
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<!-- （可选）添加自定义CSS（如果需要） -->
+	<style>
+		body {
+			background-image: url(img/background.jpeg);
+			background-repeat: no-repeat;
+			/* 不重复图片 */
+			background-position: center center;
+			/* 图片居中显示 */
+			background-size: auto auto;
+			/* 拉伸图片以填充元素 */
+			display: flex;
+			flex-direction: column;
+			min-height: 100vh;
+			/* 视口高度 */
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		main {
+			flex: 1;
+		}
+
+		#games {
+			text-align: center;
+			margin: 0 auto;
+		}
+
+		#game-container {
+			margin: 50px 20px;
+			position: relative;
+			height: 200px;
+			overflow: hidden;
+			background-color: rgba(255, 255, 255, 0.6);
+		}
+
+		.block {
+			position: absolute;
+			width: 100px;
+			height: 200px;
+			background-color: black;
+			bottom: 0;
+			transition: all 0.5s ease;
+		}
+
+		#gy {
+			text-align: center;
+		}
+
+		.mod_help {
+			display: flex;
+			justify-content: space-around;
+			/* 让每个列表项平均分布 */
+			padding: 20px;
+			background-color: rgba(255, 255, 255, 0.7);
+			margin-top: 100px;
+		}
+
+		.mod_help_item dt {
+			font-weight: bold;
+		}
+
+		.mod_help_item dd a {
+			text-decoration: none;
+			color: #333;
+			display: block;
+			margin-bottom: 5px;
+		}
+
+		@media (max-width: 767.98px) {
+			.navbar-brand {
+				color: #fff;
+				/* 示例：改变品牌标志的颜色 */
+			}
+
+			.navbar-nav .nav-link {
+				color: #fff;
+				/* 示例：改变链接的颜色 */
+			}
+
+
+		}
+	</style>
+	<!-- 引入Bootstrap JavaScript（可选，如果你需要导航栏的折叠效果） -->
+	<script src="js/jquery-3.5.1.slim.min.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+	<main>
+		<!-- 导航栏 -->
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<a class="navbar-brand" href="#"><img style="height: 50px; width: 50px;" src="img/logo.png" alt="" /></a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+				aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav">
+					<li class="nav-item active">
+						<a class="nav-link" href="index.html">首页 <span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#gy">关于</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="service.html">服务</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">联系我们</a>
+					</li>
+				</ul>
+			</div>
+		</nav>
+
+		<!-- 页面内容 -->
+		<div id="games">
+			<div class="h1">
+				您的得分<span id="score">
+					0
+				</span>
+			</div>
+			<div id="game-container">
+				<!-- 这里将动态添加钢琴块 -->
+			</div>
+			<div id="Mybtn">
+				<button id="start-game" class="btn btn-primary">开始游戏</button>
+			</div>
+		</div>
+
+
+	</main>
+
+
+	<div class="mod_help" id="gy">
+		<dl class="mod_help_item">
+			<dt>爱坤指南</dt>
+			<dd><a href="#">爱坤流程</a></dd>
+			<dd><a href="#">爱坤介绍</a></dd>
+			<dd><a href="#">生活</a></dd>
+			<dd><a href="#">常见问题</a></dd>
+		</dl>
+		<dl class="mod_help_item">
+			<dt>爱坤服务</dt>
+			<dd><a href="#">爱坤政策</a></dd>
+			<dd><a href="#">爱坤方式</a></dd>
+			<dd><a href="#">爱坤制度</a></dd>
+			<dd><a href="#">客服</a></dd>
+		</dl>
+		<dl class="mod_help_item">
+			<dt>爱坤方式</dt>
+			<dd><a href="#">唱</a></dd>
+			<dd><a href="#">跳</a></dd>
+			<dd><a href="#">rap</a></dd>
+			<dd><a href="#">篮球</a></dd>
+		</dl>
+		<dl class="mod_help_item">
+			<dt>关于爱坤</dt>
+			<dd><a href="#">坤坤介绍</a></dd>
+			<dd><a href="#">爱坤发展历程</a></dd>
+			<dd><a href="#">加入爱坤</a></dd>
+			<dd><a href="#">爱坤伙伴</a></dd>
+		</dl>
+		<dl class="mod_help_item">
+			<dt>关注我们</dt>
+			<dd><a href="#">爱坤公众号</a></dd>
+			<dd><a href="#">爱坤微博</a></dd>
+			<dd><a href="#">抖音账号</a></dd>
+			<dd><a href="#">爱坤下载</a></dd>
+		</dl>
+	</div>
+
+	<script>
+		// game.js
+		$(document).ready(function () {
+			var isGameRunning = false;
+			var blockSpeed = 5; // 块的移动速度，单位：像素/秒
+			var maxSpeed; // 块的最大移动速度
+			var blockIntervals = []; // 存储每个块的定时器的数组
+			var score = 0;
+
+			function addBlock() {
+				if (isGameRunning) {
+					var leftPos = Math.random() * ($('#game-container').width() - 100); // 随机位置
+					var block = $('<div class="block" style="left: ' + leftPos + 'px;"></div>');
+					$('#game-container').append(block);
+
+					// 模拟块的移动
+					var intervalId = setInterval(function () {
+						var currentLeft = parseInt(block.css('left'));
+						block.css('left', currentLeft + blockSpeed + 'px');
+
+						// 如果块移出视口，移除它
+						if (currentLeft + 100 < 0) {
+							clearInterval(intervalId);
+							block.remove();
+						}
+
+						if (blockSpeed < maxSpeed) {
+							blockSpeed += 0.1; // 每秒增加一点速度（假设每秒60帧）
+						}
+					}, 1000 / 60); // 假设每秒60帧
+				} else {
+					console.log("停止")
+				}
+				blockIntervals.push(intervalId);
+
+			}
+
+			$('#start-game').click(function () {
+				maxSpeed = prompt("速度（整数）：", "20");
+				if (!isGameRunning) {
+					isGameRunning = true;
+					setInterval(addBlock, 1000); // 每秒添加一个块
+					// 可以在这里添加其他启动游戏的逻辑
+				}
+			});
+
+			// 添加点击事件（这里只是示例，实际游戏需要更复杂的逻辑）
+			$('#game-container').click(function (e) {
+				if (isGameRunning) {
+					// 转换点击位置为相对于游戏容器的位置
+					var clickX = e.pageX - $(this).offset().left;
+					var clickY = e.pageY - $(this).offset().top;
+
+					// 遍历所有块
+					$('.block').each(function () {
+						var block = $(this);
+						var blockLeft = parseInt(block.css('left'));
+						var blockTop = parseInt(block.css('top')); // 假设块是从顶部开始的，如果不是，需要调整
+						var blockWidth = block.width();
+						var blockHeight = block.height();
+
+						// 检查点击位置是否在块内
+						if (clickX >= blockLeft && clickX <= blockLeft + blockWidth &&
+							clickY >= blockTop && clickY <= blockTop + blockHeight) {
+							// 点击在块上，移除块
+							block.remove();
+							// 可以在这里添加得分或其他逻辑
+							score++; // 增加得分
+							$('#score').text(score); // 更新div中的得分
+							return false; // 跳出循环，不需要继续检查其他块
+						} else {
+							isGameRunning = false;
+							clearInterval(setInterval(addBlock, 1000)); // 注意：这里我们其实是在清除一个立即执行的定时器，但关键是停止调用addBlock
+
+							// 清除所有块的定时器
+							blockIntervals.forEach(function (intervalId) {
+								clearInterval(intervalId);
+							});
+							$('.block').remove();
+							console.log(isGameRunning)
+							alert('你输了！');
+							$("#start-game").remove();
+							$(".rest").remove();
+							$('#Mybtn').append('<a class="btn btn-primary rest" href="Pianoblock.html">请点击这个按钮继续游戏</a>');
+						}
+					});
+				}
+			});
+		});
+	</script>
+
+</body>
+
+</html>
