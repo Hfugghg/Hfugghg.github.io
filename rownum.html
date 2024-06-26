@@ -31,10 +31,17 @@
 			flex: 1;
 		}
 		
-		#games{
-			text-align: center;
+		.numbers-display {
+		            margin-top: 20px;
+		            padding: 10px;
+		            line-height: 1.5;
+					text-align: center;
+		        }
+		
+		.rownum{
+			margin: 0 auto;
 		}
-
+		
 		#gy {
 			text-align: center;
 		}
@@ -59,7 +66,6 @@
 			margin-bottom: 5px;
 		}
 
-
 		@media (max-width: 767.98px) {
 			.navbar-brand {
 				color: #fff;
@@ -78,12 +84,11 @@
 	<script src="js/jquery-3.5.1.slim.min.js"></script>
 	<script src="js/popper.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
-
+	
 </head>
 
 <body>
 	<main>
-
 		<!-- 导航栏 -->
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
 			<a class="navbar-brand" href="#"><img style="height: 50px; width: 50px;" src="img/logo.png" alt="" /></a>
@@ -94,7 +99,7 @@
 			<div class="collapse navbar-collapse" id="navbarNav">
 				<ul class="navbar-nav">
 					<li class="nav-item active">
-						<a class="nav-link" href="index.html">首页 <span class="sr-only">(current)</span></a>
+						<a class="nav-link" href="#">首页 <span class="sr-only">(current)</span></a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="#gy">关于</a>
@@ -109,15 +114,30 @@
 			</div>
 		</nav>
 
-		<div id="games">
-			<h1>猜数字游戏</h1>
-			<p>猜一个1到100之间的数字:</p>
-			<input type="number" id="guessInput" min="1" max="100">
-			<button onclick="checkGuess()" class="btn btn-primary">提交猜测</button>
-			<p id="feedback"></p>
-		</div>
-		
+		<!-- 页面内容 -->
+		<div class="container mt-5">
+		        <h2>随机选号器</h2>
+		        <form id="randomNumberForm">
+		            <div class="form-group">
+		                <label for="minNum">最小范围</label>
+		                <input type="number" class="form-control" id="minNum" placeholder="输入最小范围">
+		            </div>
+		            <div class="form-group">
+		                <label for="maxNum">最大范围</label>
+		                <input type="number" class="form-control" id="maxNum" placeholder="输入最大范围">
+		            </div>
+		            <div class="form-group">
+		                <label for="numCount">选号数量</label>
+		                <input type="number" class="form-control" id="numCount" placeholder="输入选号数量">
+		            </div>
+		            <button type="submit" class="btn btn-primary" class="rownum">随机选号</button>
+		        </form>
+		        <div class="h1 numbers-display" id="numbersDisplay"></div>
+		    </div>
+
 	</main>
+
+
 	<div class="mod_help" id="gy">
 		<dl class="mod_help_item">
 			<dt>爱坤指南</dt>
@@ -155,31 +175,39 @@
 			<dd><a href="#">爱坤下载</a></dd>
 		</dl>
 	</div>
+	
 	<script>
-		let randomNumber = Math.floor(Math.random() * 100) + 1; // 生成1到100的随机数
-		let guessInput = document.getElementById('guessInput'); // 获取输入框
-		let feedback = document.getElementById('feedback'); // 获取反馈元素
-
-		console.log(guessInput)
-
-		function checkGuess() {
-			let guess = parseInt(guessInput.value); // 获取用户猜测的数字
-
-			if (isNaN(guess)) {
-				feedback.textContent = '请输入一个有效的数字！'; // 验证输入是否为数字
-			} else if (guess === randomNumber) {
-				feedback.textContent = '恭喜你，猜对了！'; // 如果猜对了
-				// 这里可以添加更多逻辑，比如重置游戏或显示新的随机数
-			} else if (guess < randomNumber) {
-				feedback.textContent = '猜小了，再试一次！'; // 如果猜小了
-			} else {
-				feedback.textContent = '猜大了，再试一次！'; // 如果猜大了
-			}
-
-			// 可以选择性地清空输入框以便再次猜测
-			guessInput.value = '';
-		}
+		$(document).ready(function() {
+		    $('#randomNumberForm').on('submit', function(e) {
+		        e.preventDefault(); // 阻止表单默认提交行为
+		
+		        // 获取用户输入
+		        var minNum = parseInt($('#minNum').val(), 10);
+		        var maxNum = parseInt($('#maxNum').val(), 10);
+		        var numCount = parseInt($('#numCount').val(), 10);
+		
+		        // 验证输入
+		        if (isNaN(minNum) || isNaN(maxNum) || isNaN(numCount) || minNum > maxNum || numCount <= 0 || numCount > (maxNum - minNum + 1)) {
+		            alert('请输入有效的选号范围和数量！');
+		            return;
+		        }else{
+					// 生成随机数并显示
+					var numbers = [];
+					for (var i = 0; i < numCount; i++) {
+					    var randomNum;
+					    do {
+					        randomNum = Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
+					    } while (numbers.includes(randomNum)); // 循环直到生成不重复的随机数
+					    numbers.push(randomNum);
+					}
+							
+					// 显示结果
+					$('#numbersDisplay').text('选号结果: ' + numbers.join(', '));
+				}
+		    });
+		});
 	</script>
+	
 </body>
 
 </html>
