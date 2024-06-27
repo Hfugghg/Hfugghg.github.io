@@ -6,22 +6,16 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>2306覃睿的项目</title>
 	<link rel="icon" type="image/png" sizes="192x192" href="img/logo.png">
-	<!-- 引入Bootstrap CSS -->
 	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<!-- （可选）添加自定义CSS（如果需要） -->
 	<style>
 		body {
 			background-image: url(img/background.jpeg);
 			background-repeat: no-repeat;
-			/* 不重复图片 */
 			background-position: center center;
-			/* 图片居中显示 */
 			background-size: auto auto;
-			/* 拉伸图片以填充元素 */
 			display: flex;
 			flex-direction: column;
 			min-height: 100vh;
-			/* 视口高度 */
 			margin: 0;
 			padding: 0;
 			box-sizing: border-box;
@@ -30,6 +24,58 @@
 		main {
 			flex: 1;
 			text-align: center;
+		}
+		
+		dt{
+			font-size: 20px;
+			color: gray;
+		}
+		
+		/* 模态框样式 */
+		.modal {
+		  display: none; /* 默认隐藏模态框 */
+		  position: fixed; /* 模态框固定在视口上 */
+		  z-index: 1; /* 设置模态框在最高层级 */
+		  left: 0;
+		  top: 0;
+		  width: 100%; /* 全屏宽度 */
+		  height: 100%; /* 全屏高度 */
+		  overflow: auto; /* 允许滚动 */
+		  background-color: rgba(0, 0, 0, 0.4); /* 黑色背景，半透明 */
+		}
+		
+		/* 模态框内容样式 */
+		.modal-content {
+		  background-color: #fefefe;
+		  margin: 15% auto; /* 15% 从顶部开始，水平居中 */
+		  padding: 20px;
+		  border: 1px solid #888;
+		  width: 80%; /* 宽度可以根据需要调整 */
+		  max-width: 600px; /* 限制最大宽度 */
+		}
+		
+		/* 关闭按钮样式 */
+		.close {
+		  color: #aaa;
+		  float: right;
+		  font-size: 28px;
+		  font-weight: bold;
+		  cursor: pointer;
+		}
+		
+		.close:hover,
+		.close:focus {
+		  color: black;
+		  text-decoration: none;
+		  cursor: pointer;
+		}
+		
+		/* 二维码图片样式 */
+		.qrcode-image {
+		  display: block;
+		  margin: 0 auto; /* 水平居中 */
+		  max-width: 100%; /* 响应式图片 */
+		  height: auto;
 		}
 
 		#png {
@@ -109,12 +155,19 @@
 						<a class="nav-link" href="service.html">服务</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">联系我们</a>
+						<a class="nav-link" href="#" id="card">联系我们</a>
 					</li>
 				</ul>
 			</div>
 		</nav>
-
+		
+		<div id="myModal" class="modal">
+		  <div class="modal-content">
+		    <span class="close">&times;</span>
+		    <img src="img/My.png" alt="二维码名片" class="qrcode-image">
+		    <!-- 可以添加一些额外的文本或信息 -->
+		  </div>
+		</div>
 		<div id="game">
 			<button id="playRockPaperScissors" class="btn btn-primary">开始猜拳</button>
 			<div id="png">
@@ -207,6 +260,27 @@
 				playRockPaperScissors();
 			});
 		});
+		
+		let modal = document.getElementById("myModal");
+		let btn = document.getElementById("card");
+		let span = document.getElementsByClassName("close")[0];
+		
+		// 显示模态框
+		btn.onclick = function() {
+		  modal.style.display = "block";
+		}
+		
+		// 隐藏模态框
+		span.onclick = function() {
+		  modal.style.display = "none";
+		}
+		
+		// 当用户点击模态框外部时关闭它
+		window.onclick = function(event) {
+		  if (event.target == modal) {
+		    modal.style.display = "none";
+		  }
+		}
 	</script>
 </body>
 

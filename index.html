@@ -13,15 +13,11 @@
 		body {
 			background-image: url(img/background.jpeg);
 			background-repeat: no-repeat;
-			/* 不重复图片 */
 			background-position: center center;
-			/* 图片居中显示 */
 			background-size: auto auto;
-			/* 拉伸图片以填充元素 */
 			display: flex;
 			flex-direction: column;
 			min-height: 100vh;
-			/* 视口高度 */
 			margin: 0;
 			padding: 0;
 			box-sizing: border-box;
@@ -30,7 +26,69 @@
 		main {
 			flex: 1;
 		}
+
+		dt{
+			font-size: 20px;
+			color: gray;
+		}
 		
+		/* 模态框样式 */
+		.modal {
+		  display: none; /* 默认隐藏模态框 */
+		  position: fixed; /* 模态框固定在视口上 */
+		  z-index: 1; /* 设置模态框在最高层级 */
+		  left: 0;
+		  top: 0;
+		  width: 100%; /* 全屏宽度 */
+		  height: 100%; /* 全屏高度 */
+		  overflow: auto; /* 允许滚动 */
+		  background-color: rgba(0, 0, 0, 0.4); /* 黑色背景，半透明 */
+		}
+		
+		/* 模态框内容样式 */
+		.modal-content {
+		  background-color: #fefefe;
+		  margin: 15% auto; /* 15% 从顶部开始，水平居中 */
+		  padding: 20px;
+		  border: 1px solid #888;
+		  width: 80%; /* 宽度可以根据需要调整 */
+		  max-width: 600px; /* 限制最大宽度 */
+		}
+		
+		/* 关闭按钮样式 */
+		.close {
+		  color: #aaa;
+		  float: right;
+		  font-size: 28px;
+		  font-weight: bold;
+		  cursor: pointer;
+		}
+		
+		.close:hover,
+		.close:focus {
+		  color: black;
+		  text-decoration: none;
+		  cursor: pointer;
+		}
+		
+		/* 二维码图片样式 */
+		.qrcode-image {
+		  display: block;
+		  margin: 0 auto; /* 水平居中 */
+		  max-width: 100%; /* 响应式图片 */
+		  height: auto;
+		}
+		
+		.bouncing-ball {
+		  position: absolute;
+		  width: 50px; /* 篮球的宽度 */
+		  height: 50px; /* 篮球的高度 */
+		  background-image: url('img/basketball.png'); /* 替换为你的篮球图片路径 */
+		  background-size: cover;
+		  border-radius: 50%; /* 圆形效果 */
+		  animation: bounce 2s infinite; /* 弹跳动画 */
+		}
+
 
 		#gy {
 			text-align: center;
@@ -39,7 +97,6 @@
 		.mod_help {
 			display: flex;
 			justify-content: space-around;
-			/* 让每个列表项平均分布 */
 			padding: 20px;
 			background-color: rgba(255, 255, 255, 0.7);
 			margin-top: 100px;
@@ -59,19 +116,15 @@
 		@media (max-width: 767.98px) {
 			.navbar-brand {
 				color: #fff;
-				/* 示例：改变品牌标志的颜色 */
 			}
 
 			.navbar-nav .nav-link {
 				color: #fff;
-				/* 示例：改变链接的颜色 */
 			}
 
 
 		}
-
 	</style>
-	<!-- 引入Bootstrap JavaScript（可选，如果你需要导航栏的折叠效果） -->
 	<script src="js/jquery-3.5.1.slim.min.js"></script>
 	<script src="js/popper.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
@@ -92,15 +145,6 @@
 		})
 
 
-	</script>
-		<!-- Google tag (gtag.js) -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=G-3L2GVVEFNF"></script>
-	<script>
-	  window.dataLayer = window.dataLayer || [];
-	  function gtag(){dataLayer.push(arguments);}
-	  gtag('js', new Date());
-	
-	  gtag('config', 'G-3L2GVVEFNF');
 	</script>
 </head>
 
@@ -125,7 +169,7 @@
 						<a class="nav-link" href="service.html">服务</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">联系我们</a>
+						<a class="nav-link" href="#" id="card">联系我们</a>
 					</li>
 				</ul>
 			</div>
@@ -134,6 +178,14 @@
 		<!-- 页面内容 -->
 		<div class="container mt-5">
 			<h1>欢迎小黑子<span id="user">你</span>来到我的网站！</h1>
+		</div>
+		<div id="basketball" class="bouncing-ball"></div>
+		<div id="myModal" class="modal">
+		  <div class="modal-content">
+		    <span class="close">&times;</span>
+		    <img src="img/My.png" alt="二维码名片" class="qrcode-image">
+		    <!-- 可以添加一些额外的文本或信息 -->
+		  </div>
 		</div>
 		<div style="margin: 0 auto; width: 20px;"><button class="cls btn btn-danger">&times;</button></div>
 		<div style="width: 60%; height: auto; margin: 0 auto;" class="lbt">
@@ -204,6 +256,85 @@
 			<dd><a href="#">爱坤下载</a></dd>
 		</dl>
 	</div>
+	<script>
+		const basketball = document.getElementById('basketball');
+		const ballSize = 50; // 篮球的大小
+		const windowSize = {
+		  width: window.innerWidth,
+		  height: window.innerHeight
+		};
+		
+		let ballPosition = {
+		  x: windowSize.width / 2 - ballSize / 2, // 初始X位置
+		  y: windowSize.height - ballSize - 50, // 初始Y位置（从底部开始弹跳）
+		  dx: 3, // X轴上的速度
+		  dy: -3 // Y轴上的速度（向上弹跳）
+		};
+		
+		function updateBall() {
+		  // 更新篮球位置
+		  ballPosition.x += ballPosition.dx;
+		  ballPosition.y += ballPosition.dy;
+		
+		  // 碰到左右边框回弹
+		  if (ballPosition.x < 0 || ballPosition.x > windowSize.width - ballSize) {
+		    ballPosition.dx = -ballPosition.dx; // 反转X轴速度
+		  }
+		
+		  // 碰到顶部边框（假设篮球不会弹得太高以至于看不到）
+		  if (ballPosition.y < 0) {
+		    ballPosition.dy = Math.abs(ballPosition.dy); // 重置Y轴速度为正，使其向下
+		  }
+		
+		  // 碰到底部边框
+		  if (ballPosition.y > windowSize.height - ballSize) {
+		    ballPosition.dy = -Math.abs(ballPosition.dy); // 反转Y轴速度
+		  }
+		
+		  // 设置篮球的CSS位置
+		  basketball.style.left = `${ballPosition.x}px`;
+		  basketball.style.top = `${ballPosition.y}px`;
+		
+		  // 请求下一帧动画
+		  requestAnimationFrame(updateBall);
+		}
+		
+		// 开始动画
+		updateBall();
+		
+		// 监听窗口大小变化，更新窗口大小变量
+		window.addEventListener('resize', function() {
+		  windowSize.width = window.innerWidth;
+		  windowSize.height = window.innerHeight;
+		  // 可能需要在这里重置篮球的初始位置（视情况而定）
+		});
+		
+		basketball.addEventListener('click', function() {
+		    // 当点击时，删除元素
+		    this.remove();
+		});
+		
+		let modal = document.getElementById("myModal");
+		let btn = document.getElementById("card");
+		let span = document.getElementsByClassName("close")[0];
+		
+		// 显示模态框
+		btn.onclick = function() {
+		  modal.style.display = "block";
+		}
+		
+		// 隐藏模态框
+		span.onclick = function() {
+		  modal.style.display = "none";
+		}
+		
+		// 当用户点击模态框外部时关闭它
+		window.onclick = function(event) {
+		  if (event.target == modal) {
+		    modal.style.display = "none";
+		  }
+		}
+	</script>
 </body>
 
 </html>

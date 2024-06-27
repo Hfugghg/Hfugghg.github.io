@@ -6,22 +6,16 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>2306覃睿的项目</title>
 	<link rel="icon" type="image/png" sizes="192x192" href="img/logo.png">
-	<!-- 引入Bootstrap CSS -->
 	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<!-- （可选）添加自定义CSS（如果需要） -->
 	<style>
 		body {
 			background-image: url(img/background.jpeg);
 			background-repeat: no-repeat;
-			/* 不重复图片 */
 			background-position: center center;
-			/* 图片居中显示 */
 			background-size: auto auto;
-			/* 拉伸图片以填充元素 */
 			display: flex;
 			flex-direction: column;
 			min-height: 100vh;
-			/* 视口高度 */
 			margin: 0;
 			padding: 0;
 			box-sizing: border-box;
@@ -30,13 +24,65 @@
 		main {
 			flex: 1;
 		}
+		
+		dt{
+			font-size: 20px;
+			color: gray;
+		}
+		
+		/* 模态框样式 */
+		.modal {
+		  display: none; /* 默认隐藏模态框 */
+		  position: fixed; /* 模态框固定在视口上 */
+		  z-index: 1; /* 设置模态框在最高层级 */
+		  left: 0;
+		  top: 0;
+		  width: 100%; /* 全屏宽度 */
+		  height: 100%; /* 全屏高度 */
+		  overflow: auto; /* 允许滚动 */
+		  background-color: rgba(0, 0, 0, 0.4); /* 黑色背景，半透明 */
+		}
+		
+		/* 模态框内容样式 */
+		.modal-content {
+		  background-color: #fefefe;
+		  margin: 15% auto; /* 15% 从顶部开始，水平居中 */
+		  padding: 20px;
+		  border: 1px solid #888;
+		  width: 80%; /* 宽度可以根据需要调整 */
+		  max-width: 600px; /* 限制最大宽度 */
+		}
+		
+		/* 关闭按钮样式 */
+		.close {
+		  color: #aaa;
+		  float: right;
+		  font-size: 28px;
+		  font-weight: bold;
+		  cursor: pointer;
+		}
+		
+		.close:hover,
+		.close:focus {
+		  color: black;
+		  text-decoration: none;
+		  cursor: pointer;
+		}
+		
+		/* 二维码图片样式 */
+		.qrcode-image {
+		  display: block;
+		  margin: 0 auto; /* 水平居中 */
+		  max-width: 100%; /* 响应式图片 */
+		  height: auto;
+		}
 
 		#games {
 			text-align: center;
 			margin: 0 auto;
 		}
 
-		#game-container {
+		.game-container {
 			margin: 50px 20px;
 			position: relative;
 			height: 200px;
@@ -60,7 +106,6 @@
 		.mod_help {
 			display: flex;
 			justify-content: space-around;
-			/* 让每个列表项平均分布 */
 			padding: 20px;
 			background-color: rgba(255, 255, 255, 0.7);
 			margin-top: 100px;
@@ -80,18 +125,15 @@
 		@media (max-width: 767.98px) {
 			.navbar-brand {
 				color: #fff;
-				/* 示例：改变品牌标志的颜色 */
 			}
 
 			.navbar-nav .nav-link {
 				color: #fff;
-				/* 示例：改变链接的颜色 */
 			}
 
 
 		}
 	</style>
-	<!-- 引入Bootstrap JavaScript（可选，如果你需要导航栏的折叠效果） -->
 	<script src="js/jquery-3.5.1.slim.min.js"></script>
 	<script src="js/popper.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
@@ -119,21 +161,28 @@
 						<a class="nav-link" href="service.html">服务</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">联系我们</a>
+						<a class="nav-link" href="#" id="card">联系我们</a>
 					</li>
 				</ul>
 			</div>
 		</nav>
 
 		<!-- 页面内容 -->
+		<div id="myModal" class="modal">
+		  <div class="modal-content">
+		    <span class="close">&times;</span>
+		    <img src="img/My.png" alt="二维码名片" class="qrcode-image">
+		    <!-- 可以添加一些额外的文本或信息 -->
+		  </div>
+		</div>
 		<div id="games">
 			<div class="h1">
 				您的得分<span id="score">
 					0
 				</span>
 			</div>
-			<div id="game-container">
-				<!-- 这里将动态添加钢琴块 -->
+			<div class="game-container">
+				<!-- 这里将动态添加块 -->
 			</div>
 			<div id="Mybtn">
 				<button id="start-game" class="btn btn-primary">开始游戏</button>
@@ -142,7 +191,6 @@
 
 
 	</main>
-
 
 	<div class="mod_help" id="gy">
 		<dl class="mod_help_item">
@@ -183,23 +231,22 @@
 	</div>
 
 	<script>
-		// game.js
 		$(document).ready(function () {
-			var isGameRunning = false;
-			var blockSpeed = 5; // 块的移动速度，单位：像素/秒
-			var maxSpeed; // 块的最大移动速度
-			var blockIntervals = []; // 存储每个块的定时器的数组
-			var score = 0;
+			let isGameRunning = false;
+			let blockSpeed = 5; // 块的移动速度，单位：像素/秒
+			let maxSpeed; // 块的最大移动速度
+			let blockIntervals = []; // 存储每个块的定时器的数组
+			let score = 0;
 
 			function addBlock() {
 				if (isGameRunning) {
-					var leftPos = Math.random() * ($('#game-container').width() - 100); // 随机位置
-					var block = $('<div class="block" style="left: ' + leftPos + 'px;"></div>');
-					$('#game-container').append(block);
+					let leftPos = Math.random() * ($('.game-container').width() - 100); // 随机位置
+					let block = $('<div class="block" style="left: ' + leftPos + 'px;"></div>');
+					$('.game-container').append(block);
 
 					// 模拟块的移动
-					var intervalId = setInterval(function () {
-						var currentLeft = parseInt(block.css('left'));
+					let intervalId = setInterval(function () {
+						let currentLeft = parseInt(block.css('left'));
 						block.css('left', currentLeft + blockSpeed + 'px');
 
 						// 如果块移出视口，移除它
@@ -228,20 +275,20 @@
 				}
 			});
 
-			// 添加点击事件（这里只是示例，实际游戏需要更复杂的逻辑）
-			$('#game-container').click(function (e) {
+			// 添加点击事件
+			$('.game-container').click(function (e) {
 				if (isGameRunning) {
 					// 转换点击位置为相对于游戏容器的位置
-					var clickX = e.pageX - $(this).offset().left;
-					var clickY = e.pageY - $(this).offset().top;
+					let clickX = e.pageX - $(this).offset().left;
+					let clickY = e.pageY - $(this).offset().top;
 
 					// 遍历所有块
 					$('.block').each(function () {
-						var block = $(this);
-						var blockLeft = parseInt(block.css('left'));
-						var blockTop = parseInt(block.css('top')); // 假设块是从顶部开始的，如果不是，需要调整
-						var blockWidth = block.width();
-						var blockHeight = block.height();
+						let block = $(this);
+						let blockLeft = parseInt(block.css('left'));
+						let blockTop = parseInt(block.css('top'));
+						let blockWidth = block.width();
+						let blockHeight = block.height();
 
 						// 检查点击位置是否在块内
 						if (clickX >= blockLeft && clickX <= blockLeft + blockWidth &&
@@ -254,7 +301,7 @@
 							return false; // 跳出循环，不需要继续检查其他块
 						} else {
 							isGameRunning = false;
-							clearInterval(setInterval(addBlock, 1000)); // 注意：这里我们其实是在清除一个立即执行的定时器，但关键是停止调用addBlock
+							clearInterval(setInterval(addBlock, 1000));
 
 							// 清除所有块的定时器
 							blockIntervals.forEach(function (intervalId) {
@@ -271,6 +318,27 @@
 				}
 			});
 		});
+		
+		let modal = document.getElementById("myModal");
+		let btn = document.getElementById("card");
+		let span = document.getElementsByClassName("close")[0];
+		
+		// 显示模态框
+		btn.onclick = function() {
+		  modal.style.display = "block";
+		}
+		
+		// 隐藏模态框
+		span.onclick = function() {
+		  modal.style.display = "none";
+		}
+		
+		// 当用户点击模态框外部时关闭它
+		window.onclick = function(event) {
+		  if (event.target == modal) {
+		    modal.style.display = "none";
+		  }
+		}
 	</script>
 
 </body>

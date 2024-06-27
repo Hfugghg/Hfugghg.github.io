@@ -31,17 +31,69 @@
 			flex: 1;
 		}
 		
-		.numbers-display {
-		            margin-top: 20px;
-		            padding: 10px;
-		            line-height: 1.5;
-					text-align: center;
-		        }
-		
-		.rownum{
-			margin: 0 auto;
+		dt{
+			font-size: 20px;
+			color: gray;
 		}
 		
+		/* 模态框样式 */
+		.modal {
+		  display: none; /* 默认隐藏模态框 */
+		  position: fixed; /* 模态框固定在视口上 */
+		  z-index: 1; /* 设置模态框在最高层级 */
+		  left: 0;
+		  top: 0;
+		  width: 100%; /* 全屏宽度 */
+		  height: 100%; /* 全屏高度 */
+		  overflow: auto; /* 允许滚动 */
+		  background-color: rgba(0, 0, 0, 0.4); /* 黑色背景，半透明 */
+		}
+		
+		/* 模态框内容样式 */
+		.modal-content {
+		  background-color: #fefefe;
+		  margin: 15% auto; /* 15% 从顶部开始，水平居中 */
+		  padding: 20px;
+		  border: 1px solid #888;
+		  width: 80%; /* 宽度可以根据需要调整 */
+		  max-width: 600px; /* 限制最大宽度 */
+		}
+		
+		/* 关闭按钮样式 */
+		.close {
+		  color: #aaa;
+		  float: right;
+		  font-size: 28px;
+		  font-weight: bold;
+		  cursor: pointer;
+		}
+		
+		.close:hover,
+		.close:focus {
+		  color: black;
+		  text-decoration: none;
+		  cursor: pointer;
+		}
+		
+		/* 二维码图片样式 */
+		.qrcode-image {
+		  display: block;
+		  margin: 0 auto; /* 水平居中 */
+		  max-width: 100%; /* 响应式图片 */
+		  height: auto;
+		}
+
+		.numbers-display {
+			margin-top: 20px;
+			padding: 10px;
+			line-height: 1.5;
+			text-align: center;
+		}
+
+		.rownum {
+			margin: 0 auto;
+		}
+
 		#gy {
 			text-align: center;
 		}
@@ -84,7 +136,7 @@
 	<script src="js/jquery-3.5.1.slim.min.js"></script>
 	<script src="js/popper.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
-	
+
 </head>
 
 <body>
@@ -108,32 +160,39 @@
 						<a class="nav-link" href="service.html">服务</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">联系我们</a>
+						<a class="nav-link" href="#" id="card">联系我们</a>
 					</li>
 				</ul>
 			</div>
 		</nav>
 
 		<!-- 页面内容 -->
+		<div id="myModal" class="modal">
+		  <div class="modal-content">
+		    <span class="close">&times;</span>
+		    <img src="img/My.png" alt="二维码名片" class="qrcode-image">
+		    <!-- 可以添加一些额外的文本或信息 -->
+		  </div>
+		</div>
 		<div class="container mt-5">
-		        <h2>随机选号器</h2>
-		        <form id="randomNumberForm">
-		            <div class="form-group">
-		                <label for="minNum">最小范围</label>
-		                <input type="number" class="form-control" id="minNum" placeholder="输入最小范围">
-		            </div>
-		            <div class="form-group">
-		                <label for="maxNum">最大范围</label>
-		                <input type="number" class="form-control" id="maxNum" placeholder="输入最大范围">
-		            </div>
-		            <div class="form-group">
-		                <label for="numCount">选号数量</label>
-		                <input type="number" class="form-control" id="numCount" placeholder="输入选号数量">
-		            </div>
-		            <button type="submit" class="btn btn-primary" class="rownum">随机选号</button>
-		        </form>
-		        <div class="h1 numbers-display" id="numbersDisplay"></div>
-		    </div>
+			<h2>随机选号器</h2>
+			<form id="randomNumberForm">
+				<div class="form-group">
+					<label for="minNum">最小范围</label>
+					<input type="number" class="form-control" id="minNum" placeholder="输入最小范围">
+				</div>
+				<div class="form-group">
+					<label for="maxNum">最大范围</label>
+					<input type="number" class="form-control" id="maxNum" placeholder="输入最大范围">
+				</div>
+				<div class="form-group">
+					<label for="numCount">选号数量</label>
+					<input type="number" class="form-control" id="numCount" placeholder="输入选号数量">
+				</div>
+				<button type="submit" class="btn btn-primary" class="rownum">随机选号</button>
+			</form>
+			<div class="h1 numbers-display" id="numbersDisplay"></div>
+		</div>
 
 	</main>
 
@@ -175,39 +234,59 @@
 			<dd><a href="#">爱坤下载</a></dd>
 		</dl>
 	</div>
-	
+
 	<script>
-		$(document).ready(function() {
-		    $('#randomNumberForm').on('submit', function(e) {
-		        e.preventDefault(); // 阻止表单默认提交行为
-		
-		        // 获取用户输入
-		        var minNum = parseInt($('#minNum').val(), 10);
-		        var maxNum = parseInt($('#maxNum').val(), 10);
-		        var numCount = parseInt($('#numCount').val(), 10);
-		
-		        // 验证输入
-		        if (isNaN(minNum) || isNaN(maxNum) || isNaN(numCount) || minNum > maxNum || numCount <= 0 || numCount > (maxNum - minNum + 1)) {
-		            alert('请输入有效的选号范围和数量！');
-		            return;
-		        }else{
+		$(document).ready(function () {
+			$('#randomNumberForm').on('submit', function (e) {
+				e.preventDefault(); // 阻止表单默认提交行为
+
+				// 获取用户输入
+				let minNum = parseInt($('#minNum').val(), 10);
+				let maxNum = parseInt($('#maxNum').val(), 10);
+				let numCount = parseInt($('#numCount').val(), 10);
+
+				// 验证输入
+				if (isNaN(minNum) || isNaN(maxNum) || isNaN(numCount) || minNum > maxNum || numCount <= 0 || numCount > (maxNum - minNum + 1)) {
+					alert('请输入有效的选号范围和数量！');
+					return;
+				} else {
 					// 生成随机数并显示
-					var numbers = [];
-					for (var i = 0; i < numCount; i++) {
-					    var randomNum;
-					    do {
-					        randomNum = Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
-					    } while (numbers.includes(randomNum)); // 循环直到生成不重复的随机数
-					    numbers.push(randomNum);
+					let numbers = [];
+					for (let i = 0; i < numCount; i++) {
+						let randomNum;
+						do {
+							randomNum = Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
+						} while (numbers.includes(randomNum)); // 循环直到生成不重复的随机数
+						numbers.push(randomNum);
 					}
-							
 					// 显示结果
 					$('#numbersDisplay').text('选号结果: ' + numbers.join(', '));
 				}
-		    });
+			});
 		});
+		
+		let modal = document.getElementById("myModal");
+		let btn = document.getElementById("card");
+		let span = document.getElementsByClassName("close")[0];
+		
+		// 显示模态框
+		btn.onclick = function() {
+		  modal.style.display = "block";
+		}
+		
+		// 隐藏模态框
+		span.onclick = function() {
+		  modal.style.display = "none";
+		}
+		
+		// 当用户点击模态框外部时关闭它
+		window.onclick = function(event) {
+		  if (event.target == modal) {
+		    modal.style.display = "none";
+		  }
+		}
 	</script>
-	
+
 </body>
 
 </html>
