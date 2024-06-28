@@ -24,57 +24,57 @@
 		main {
 			flex: 1;
 		}
-		
-		dt{
+
+		dt {
 			font-size: 20px;
 			color: gray;
 		}
-		
+
 		/* 模态框样式 */
 		.modal {
-		  display: none; /* 默认隐藏模态框 */
-		  position: fixed; /* 模态框固定在视口上 */
-		  z-index: 1; /* 设置模态框在最高层级 */
-		  left: 0;
-		  top: 0;
-		  width: 100%; /* 全屏宽度 */
-		  height: 100%; /* 全屏高度 */
-		  overflow: auto; /* 允许滚动 */
-		  background-color: rgba(0, 0, 0, 0.4); /* 黑色背景，半透明 */
+			display: none;
+			position: fixed;
+			z-index: 1;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			overflow: auto;
+			background-color: rgba(0, 0, 0, 0.4);
 		}
-		
+
 		/* 模态框内容样式 */
 		.modal-content {
-		  background-color: #fefefe;
-		  margin: 15% auto; /* 15% 从顶部开始，水平居中 */
-		  padding: 20px;
-		  border: 1px solid #888;
-		  width: 80%; /* 宽度可以根据需要调整 */
-		  max-width: 600px; /* 限制最大宽度 */
+			background-color: #fefefe;
+			margin: 15% auto;
+			padding: 20px;
+			border: 1px solid #888;
+			width: 80%;
+			max-width: 600px;
 		}
-		
+
 		/* 关闭按钮样式 */
 		.close {
-		  color: #aaa;
-		  float: right;
-		  font-size: 28px;
-		  font-weight: bold;
-		  cursor: pointer;
+			color: #aaa;
+			float: right;
+			font-size: 28px;
+			font-weight: bold;
+			cursor: pointer;
 		}
-		
+
 		.close:hover,
 		.close:focus {
-		  color: black;
-		  text-decoration: none;
-		  cursor: pointer;
+			color: black;
+			text-decoration: none;
+			cursor: pointer;
 		}
-		
+
 		/* 二维码图片样式 */
 		.qrcode-image {
-		  display: block;
-		  margin: 0 auto; /* 水平居中 */
-		  max-width: 100%; /* 响应式图片 */
-		  height: auto;
+			display: block;
+			margin: 0 auto;
+			max-width: 100%;
+			height: auto;
 		}
 
 		#games {
@@ -169,11 +169,10 @@
 
 		<!-- 页面内容 -->
 		<div id="myModal" class="modal">
-		  <div class="modal-content">
-		    <span class="close">&times;</span>
-		    <img src="img/My.png" alt="二维码名片" class="qrcode-image">
-		    <!-- 可以添加一些额外的文本或信息 -->
-		  </div>
+			<div class="modal-content">
+				<span class="close">&times;</span>
+				<img src="img/My.png" alt="二维码名片" class="qrcode-image">
+			</div>
 		</div>
 		<div id="games">
 			<div class="h1">
@@ -233,7 +232,7 @@
 	<script>
 		$(document).ready(function () {
 			let isGameRunning = false;
-			let blockSpeed = 5; // 块的移动速度，单位：像素/秒
+			let blockSpeed = 20; // 块的移动速度
 			let maxSpeed; // 块的最大移动速度
 			let blockIntervals = []; // 存储每个块的定时器的数组
 			let score = 0;
@@ -256,7 +255,7 @@
 						}
 
 						if (blockSpeed < maxSpeed) {
-							blockSpeed += 0.1; // 每秒增加一点速度（假设每秒60帧）
+							blockSpeed += 0.5; // 每秒增加一点速度（假设每秒60帧）
 						}
 					}, 1000 / 60); // 假设每秒60帧
 				} else {
@@ -268,10 +267,10 @@
 
 			$('#start-game').click(function () {
 				maxSpeed = prompt("速度（整数）：", "200");
+				$(this).remove();
 				if (!isGameRunning) {
 					isGameRunning = true;
 					setInterval(addBlock, 1000); // 每秒添加一个块
-					// 可以在这里添加其他启动游戏的逻辑
 				}
 			});
 
@@ -295,7 +294,6 @@
 							clickY >= blockTop && clickY <= blockTop + blockHeight) {
 							// 点击在块上，移除块
 							block.remove();
-							// 可以在这里添加得分或其他逻辑
 							score++; // 增加得分
 							$('#score').text(score); // 更新div中的得分
 							return false; // 跳出循环，不需要继续检查其他块
@@ -318,26 +316,26 @@
 				}
 			});
 		});
-		
+
 		let modal = document.getElementById("myModal");
 		let btn = document.getElementById("card");
 		let span = document.getElementsByClassName("close")[0];
-		
+
 		// 显示模态框
-		btn.onclick = function() {
-		  modal.style.display = "block";
+		btn.onclick = function () {
+			modal.style.display = "block";
 		}
-		
+
 		// 隐藏模态框
-		span.onclick = function() {
-		  modal.style.display = "none";
+		span.onclick = function () {
+			modal.style.display = "none";
 		}
-		
+
 		// 当用户点击模态框外部时关闭它
-		window.onclick = function(event) {
-		  if (event.target == modal) {
-		    modal.style.display = "none";
-		  }
+		window.onclick = function (event) {
+			if (event.target == modal) {
+				modal.style.display = "none";
+			}
 		}
 	</script>
 
